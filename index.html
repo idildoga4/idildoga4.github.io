@@ -64,7 +64,7 @@ button { font: inherit; color: inherit; }
 .nav .lang { padding: 6px 12px; border: 1.5px solid rgba(255, 211, 232, .55); border-radius: 999px; color: #fff; letter-spacing: .1em; }
 .nav .lang:hover { background: var(--pink); border-color: var(--pink); color: #fff; }
 
-.hint { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); font: 500 12px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 211, 232, .75); display: flex; flex-wrap: wrap; gap: 4px 18px; pointer-events: none; max-width: calc(100% - 190px); }
+.hint { position: absolute; left: max(16px, env(safe-area-inset-left, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); font: 500 12px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: rgba(255, 211, 232, .75); display: flex; flex-wrap: wrap; gap: 4px 18px; pointer-events: none; max-width: calc(100% - 32px); }
 .hint b { color: var(--pink-hi); font-weight: 500; }
 .reset { position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); padding: 12px 22px; border-radius: 999px; border: 1.5px solid rgba(255, 211, 232, .55); background: rgba(30, 10, 29, .55); backdrop-filter: blur(8px); font: 500 12.5px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: #fff; cursor: pointer; transition: background .2s, border-color .2s, transform .2s; white-space: nowrap; }
 .reset:hover { background: var(--pink); border-color: var(--pink); }
@@ -161,11 +161,14 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 900px) {
   .tag { display: none; }
-  .hint { max-width: calc(100% - 32px); bottom: calc(env(safe-area-inset-bottom, 0px) + 76px); }
+  .hint { bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); }
   .panel { top: auto; left: max(10px, env(safe-area-inset-left, 0px)); right: max(10px, env(safe-area-inset-right, 0px)); width: auto; height: 74dvh; transform: translateY(calc(100% + 30px)); border-radius: 26px 26px 20px 20px; }
 }
 @media (max-width: 620px) {
-  .hs .lbl { display: none; }
+  .hs { width: 22px; height: 22px; margin: -11px 0 0 -11px; }
+  .hs .dot { width: 22px; height: 22px; border-width: 2.5px; }
+  .hs .lbl { position: absolute; top: 50%; left: 100%; transform: translateY(-50%); margin-left: 6px; padding: 3px 8px; font-size: 10.5px; letter-spacing: .04em; }
+  .hs.left .lbl { left: auto; right: 100%; margin-left: 0; margin-right: 6px; }
   .logo { font-size: 20px; }
   .nav { gap: 10px; }
   .nav button { font-size: 11px; letter-spacing: .08em; }
@@ -202,7 +205,6 @@ button { font: inherit; color: inherit; }
   </div>
 
   <div class="hint"><span data-t="hint1"></span><span data-t="hint2"></span><span data-t="hint3"></span></div>
-  <button class="reset" id="reset" type="button" data-t="reset"></button>
 
   <aside class="panel" id="panel" role="dialog" data-ta="panel_aria">
     <div class="phead">
@@ -236,7 +238,7 @@ button { font: inherit; color: inherit; }
     tr: {
       loading: 'masa hazırlanıyor', tag: 'flutter, pembe ve temiz kod', lang_aria: 'Switch to English', lang_btn: 'EN',
       nav_projeler: 'Projeler', nav_hakkimda: 'Hakkımda', nav_iletisim: 'İletişim',
-      hs_projeler: 'projeler', hs_bitirme: 'bitirme projem', hs_yapim: 'yapım aşamasında', hs_teknoloji: 'teknolojiler', hs_hakkimda: 'hakkımda', hs_iletisim: 'iletişim',
+      hs_projeler: 'projeler', hs_bitirme: 'bitirme', hs_yapim: 'yapımda', hs_teknoloji: 'teknolojiler', hs_hakkimda: 'hakkımda', hs_iletisim: 'iletişim',
       hint1: 'sürükle: etrafa bak', hint2: 'noktalara dokun', hint3: 'kaydır: yakınlaş', reset: 'Görünümü sıfırla',
       panel_aria: 'Bölüm detayı', close_aria: 'Kapat',
       pill_projeler: 'Projeler', pill_bitirme: 'Bitirme', pill_yapim: 'Yapım aşamasında', pill_teknoloji: 'Teknolojiler', pill_hakkimda: 'Hakkımda', pill_iletisim: 'İletişim'
@@ -422,7 +424,6 @@ button { font: inherit; color: inherit; }
   });
   closeBtn.addEventListener('click', closePanel);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && panel.classList.contains('open')) closePanel(); });
-  document.getElementById('reset').addEventListener('click', function () { if (panel.classList.contains('open')) closePanel(); else if (scene3d) scene3d.home(); });
   langBtn.addEventListener('click', function () {
     LANG = LANG === 'tr' ? 'en' : 'tr';
     try { localStorage.setItem('lang', LANG); } catch (e) {}
@@ -637,7 +638,7 @@ button { font: inherit; color: inherit; }
     hakkimda: { a: [3.3, 2.5, -0.1], d: [-0.2, 2.0, 4.6] },
     iletisim: { a: [2.45, 2.3, 1.3], d: [0, 2.2, 3.8] }
   };
-  var DOTS = { projeler: [0, 4.1, -1.2], bitirme: [-1.9, 2.55, 1.5], yapim: [-3.2, 3.6, 0.3], teknoloji: [4.05, 3.5, -1.55], hakkimda: [3.2, 2.95, -0.1], iletisim: [2.45, 2.3, 1.55] };
+  var DOTS = { projeler: [0, 4.7, -1.2], bitirme: [-1.9, 2.55, 1.5], yapim: [-3.2, 3.6, 0.3], teknoloji: [4.05, 3.5, -1.55], hakkimda: [3.2, 2.95, -0.1], iletisim: [2.45, 2.3, 1.55] };
   var hsEls = Array.prototype.slice.call(document.querySelectorAll('.hs'));
   var anchors = {};
   hsEls.forEach(function (el) { var d = DOTS[el.dataset.open]; anchors[el.dataset.open] = new T.Vector3(d[0], d[1], d[2]); });
@@ -701,6 +702,7 @@ button { font: inherit; color: inherit; }
       v.copy(anchors[el.dataset.open]).project(camera);
       var off = v.z > 1 || v.x < -1.1 || v.x > 1.1;
       el.classList.toggle('off', off);
+      el.classList.toggle('left', v.x > -0.45);
       if (!off) el.style.transform = 'translate(' + ((v.x * 0.5 + 0.5) * W).toFixed(1) + 'px,' + ((-v.y * 0.5 + 0.5) * H).toFixed(1) + 'px)';
     });
     renderer.render(scene, camera);
